@@ -37,4 +37,9 @@ public class ReservationController {
         reservationService.createReservation(dto);
         return "redirect:/reservation";
     }
+
+    @GetMapping("/n1")
+    public String n1() {
+        return "n1";
+    }
 }
