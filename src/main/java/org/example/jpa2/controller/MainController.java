@@ -1,6 +1,7 @@
 package org.example.jpa2.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.jpa2.dto.AnimalFormDTO;
 import org.example.jpa2.dto.PetFormDTO;
 import org.example.jpa2.entity.Pet;
 import org.example.jpa2.service.PetService;
@@ -17,24 +18,38 @@ public class MainController {
     @GetMapping
     public String index(Model model) {
         model.addAttribute("pets", petService.findAll());
+        model.addAttribute("animals", petService.findAllAnimal());
         return "index";
     }
 
     @PostMapping
     public String create(@ModelAttribute PetFormDTO dto) {
-        petService.create(dto.toEntity());
+//        petService.create(dto.toEntity());
+        Pet pet = dto.toEntity();
+        pet.changeAnimal(petService.findAnimalById(dto.animalId()));
+        petService.create(pet);
+        return "redirect:/";
+    }
+
+    @PostMapping("/animal")
+    public String createAnimal(@ModelAttribute AnimalFormDTO dto) {
+        petService.createAnimal(dto.toEntity());
         return "redirect:/";
     }
 
     @GetMapping("/{id}") // ${id} X
     public String detail(@PathVariable Long id, Model model) {
         model.addAttribute("pet", petService.findById(id));
+        model.addAttribute("animals", petService.findAllAnimal());
         return "detail";
     }
 
     @PostMapping("/{id}")
     public String update(@ModelAttribute PetFormDTO dto, @PathVariable Long id) {
-        petService.update(dto.toEntity(id));
+        Pet pet = dto.toEntity(id);
+        pet.changeAnimal(petService.findAnimalById(dto.animalId()));
+        petService.update(pet);
+//        petService.update(dto.toEntity(id));
         return "redirect:/";
     }
 
@@ -43,4 +58,7 @@ public class MainController {
         petService.deleteById(id);
         return "redirect:/";
     }
+
+
+
 }

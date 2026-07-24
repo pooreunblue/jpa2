@@ -3,12 +3,18 @@ package org.example.jpa2.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
+// 애너테이션 (@)
+// JPA
 @Entity
+// Lombok
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+// 생성자
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA가 사용 가능
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +26,22 @@ public class Pet {
     // SoftDelete
     private boolean isDeleted;
 
+    @OneToOne(mappedBy = "pet")
+    private PetHistory petHistory;
+
     public void changeDeleted() {
         isDeleted = true;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "animal_id") // FK - 주인
+    private Animal animal;
+
+    // 더티체킹 시에 작동하는 변경 메서드
+    public void changeAnimal(Animal animal) {
+        this.animal = animal;
+    }
+
+    @OneToMany(mappedBy = "pet")
+    private List<Reservation> reservations;
 }
