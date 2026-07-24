@@ -45,9 +45,14 @@ public class ReservationService {
     }
 
     public List<DoctorReservationDTO> findDoctorReservation(Long doctorId) {
-        return reservationRepository.findAll()
+//        return reservationRepository.findAll() // Lazy Loading
+//                .stream()
+//                .filter(reservation -> reservation.getDoctor().getId().equals(doctorId))
+//                // -> select 쿼리가 돈다
+//                .map(DoctorReservationDTO::fromEntity)
+//                .toList();
+        return reservationRepository.findDoctorReservation(doctorId) // Lazy Loading
                 .stream()
-                .filter(reservation -> reservation.getDoctor().getId().equals(doctorId))
                 .map(DoctorReservationDTO::fromEntity)
                 .toList();
     }

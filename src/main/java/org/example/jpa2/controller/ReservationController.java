@@ -39,7 +39,8 @@ public class ReservationController {
     }
 
     @GetMapping("/n1")
-    public String n1() {
+    public String n1(Model model) {
+        model.addAttribute("doctorReservations", reservationService.findDoctorReservation(1L));
         return "n1";
     }
 }
