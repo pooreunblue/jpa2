@@ -30,13 +30,12 @@
     </form>
 </section>
 <section>
-    <c:forEach items="${reservations}" var="reservation">
+    <h3>N+1</h3>
+    <c:forEach items="${doctorReservations}" var="reservation">
         <%--        <p>${reservation}</p>--%>
-        <p>예약ID : ${reservation.id}</p>
-        <p>예약펫 : ${reservation.pet.name}</p>
-        <p>예약의사 : ${reservation.doctor.name}</p>
-        <p>예약일시 : ${reservation.reservationDate}</p>
-        <p>예약설명 : ${reservation.description}</p>
+        <p>예약ID : ${reservation.id()}</p>
+        <p>예약펫 : ${reservation.pet().name}</p>
+        <p>예약의사 : ${reservation.doctorName()}</p>
     </c:forEach>
 </section>
 </body>

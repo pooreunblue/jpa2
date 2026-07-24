@@ -1,6 +1,7 @@
 package org.example.jpa2.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.jpa2.dto.DoctorReservationDTO;
 import org.example.jpa2.dto.ReservationFormDTO;
 import org.example.jpa2.entity.Doctor;
 import org.example.jpa2.entity.Pet;
@@ -41,5 +42,13 @@ public class ReservationService {
 
     public List<Reservation> findAllReservation() {
         return reservationRepository.findAll();
+    }
+
+    public List<DoctorReservationDTO> findDoctorReservation(Long doctorId) {
+        return reservationRepository.findAll()
+                .stream()
+                .filter(reservation -> reservation.getDoctor().getId().equals(doctorId))
+                .map(DoctorReservationDTO::fromEntity)
+                .toList();
     }
 }

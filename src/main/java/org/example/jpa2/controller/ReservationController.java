@@ -21,6 +21,8 @@ public class ReservationController {
         model.addAttribute("doctors", reservationService.findAllDoctor());
         model.addAttribute("pets", petService.findAll());
         model.addAttribute("reservations", reservationService.findAllReservation());
+        // N+1
+        model.addAttribute("doctorReservations", reservationService.findDoctorReservation(1L));
         return "reservation";
     }
 
